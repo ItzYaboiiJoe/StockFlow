@@ -261,29 +261,43 @@ const HomeBody = () => {
             </h2>
           </div>
 
-          <div className="mt-12 grid grid-cols-3 gap-12 text-center">
-            <div>
-              <p className="text-2xl font-bold">01</p>
-              <h3 className="mt-4 text-xl font-semibold">Add your products</h3>
-              <p className="mt-2 text-muted-foreground">
-                Create your products and starting inventory.
+          <div className="relative mt-16 grid grid-cols-3 gap-8">
+            <div className="absolute left-[16.67%] right-[16.67%] top-7 border-t" />
+
+            <div className="relative text-center">
+              <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-full border bg-background text-lg font-bold">
+                01
+              </div>
+
+              <h3 className="mt-6 text-xl font-semibold">Add your products</h3>
+
+              <p className="mx-auto mt-2 max-w-xs text-muted-foreground">
+                Create your products and add your starting inventory.
               </p>
             </div>
 
-            <div>
-              <p className="text-2xl font-bold">02</p>
-              <h3 className="mt-4 text-xl font-semibold">Record activity</h3>
-              <p className="mt-2 text-muted-foreground">
-                Create orders and receive inventory.
+            <div className="relative text-center">
+              <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-full border bg-background text-lg font-bold">
+                02
+              </div>
+
+              <h3 className="mt-6 text-xl font-semibold">Record activity</h3>
+
+              <p className="mx-auto mt-2 max-w-xs text-muted-foreground">
+                Create customer orders and record incoming inventory.
               </p>
             </div>
 
-            <div>
-              <p className="text-2xl font-bold">03</p>
-              <h3 className="mt-4 text-xl font-semibold">
+            <div className="relative text-center">
+              <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-full border bg-background text-lg font-bold">
+                03
+              </div>
+
+              <h3 className="mt-6 text-xl font-semibold">
                 StockFlow tracks it
               </h3>
-              <p className="mt-2 text-muted-foreground">
+
+              <p className="mx-auto mt-2 max-w-xs text-muted-foreground">
                 Inventory, sales, and analytics update automatically.
               </p>
             </div>
@@ -293,13 +307,17 @@ const HomeBody = () => {
 
       {/* CTA */}
       <div className="border-t px-6 py-24">
-        <div className="mx-auto max-w-5xl rounded-xl border p-16 text-center">
-          <h2 className="text-4xl font-bold">Ready to take control?</h2>
-
-          <p className="mx-auto mt-4 max-w-xl text-muted-foreground">
-            Keep your inventory, orders, and business organized with StockFlow.
+        <div className="mx-auto max-w-5xl rounded-2xl border px-12 py-16 text-center">
+          <p className="text-sm font-semibold uppercase tracking-wider">
+            Get Started
           </p>
-
+          <h2 className="mt-3 text-4xl font-bold">
+            Ready to take control of your operations?
+          </h2>
+          <p className="mx-auto mt-4 max-w-xl text-muted-foreground">
+            Keep your inventory, orders, customers, and business organized with
+            StockFlow.
+          </p>
           <div className="mt-8">
             <Button size="lg">
               <Link href="/register">Get Started</Link>
@@ -312,6 +330,11 @@ const HomeBody = () => {
       <div className="border-t px-6 py-8">
         <div className="mx-auto flex max-w-7xl items-center justify-between">
           <p className="font-semibold">StockFlow</p>
+
+          <div className="flex items-center gap-6 text-sm">
+            <Link href="#features">Features</Link>
+            <Link href="#how-it-works">How It Works</Link>
+          </div>
 
           <p className="text-sm text-muted-foreground">© 2026 StockFlow</p>
         </div>
