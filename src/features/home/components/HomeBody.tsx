@@ -1,5 +1,13 @@
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
+import {
+  IconPackages,
+  IconShoppingCart,
+  IconUsers,
+  IconTruckDelivery,
+  IconBuildingWarehouse,
+  IconChartBar,
+} from "@tabler/icons-react";
 
 const HomeBody = () => {
   return (
@@ -193,12 +201,49 @@ const HomeBody = () => {
           </div>
 
           <div className="mt-12 grid grid-cols-3 gap-6">
-            <div className="rounded-xl border p-6">Inventory</div>
-            <div className="rounded-xl border p-6">Orders</div>
-            <div className="rounded-xl border p-6">Customers</div>
-            <div className="rounded-xl border p-6">Purchasing</div>
-            <div className="rounded-xl border p-6">Suppliers</div>
-            <div className="rounded-xl border p-6">Analytics</div>
+            <div className="rounded-xl border p-6">
+              <IconPackages className="h-12 w-12" />
+              <h3 className="mt-4 text-xl font-semibold">Inventory</h3>
+              <p className="mt-2 text-muted-foreground">
+                Manage your stock levels and track product movements.
+              </p>
+            </div>
+            <div className="rounded-xl border p-6">
+              <IconShoppingCart className="h-12 w-12" />
+              <h3 className="mt-4 text-xl font-semibold">Orders</h3>
+              <p className="mt-2 text-muted-foreground">
+                Create and manage customer orders seamlessly.
+              </p>
+            </div>
+            <div className="rounded-xl border p-6">
+              <IconUsers className="h-12 w-12" />
+              <h3 className="mt-4 text-xl font-semibold">Customers</h3>
+              <p className="mt-2 text-muted-foreground">
+                Maintain detailed records of your customer base.
+              </p>
+            </div>
+            <div className="rounded-xl border p-6">
+              <IconTruckDelivery className="h-12 w-12" />
+              <h3 className="mt-4 text-xl font-semibold">Purchasing</h3>
+              <p className="mt-2 text-muted-foreground">
+                Streamline your procurement process and supplier management.
+              </p>
+            </div>
+            <div className="rounded-xl border p-6">
+              <IconBuildingWarehouse className="h-12 w-12" />
+              <h3 className="mt-4 text-xl font-semibold">Suppliers</h3>
+              <p className="mt-2 text-muted-foreground">
+                Keep track of supplier information and communication.
+              </p>
+            </div>
+            <div className="rounded-xl border p-6">
+              <IconChartBar className="h-12 w-12" />
+              <h3 className="mt-4 text-xl font-semibold">Analytics</h3>
+              <p className="mt-2 text-muted-foreground">
+                Gain insights into your business performance with detailed
+                reports.
+              </p>
+            </div>
           </div>
         </div>
       </div>
