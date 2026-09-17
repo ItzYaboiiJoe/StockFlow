@@ -23,8 +23,8 @@ import Link from "next/link";
 
 // Form Schema
 const loginSchema = z.object({
-  email: z.email(),
-  password: z.string(),
+  email: z.email("Enter a valid email"),
+  password: z.string().min(1, "Password is required"),
 });
 
 const LoginForm = () => {
