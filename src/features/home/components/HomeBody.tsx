@@ -13,13 +13,15 @@ const HomeBody = () => {
   return (
     <div>
       {/* Hero */}
-      <div className="px-6 py-24">
+      <div className="px-4 py-16 md:px-6 md:py-24">
         <div className="mx-auto max-w-7xl text-center">
           <p className="mb-4 text-sm font-semibold uppercase tracking-wider">
             Inventory. Orders. Simplified.
           </p>
 
-          <h1 className="text-6xl font-bold">Keep your business in motion.</h1>
+          <h1 className="text-4xl font-bold md:text-6xl">
+            Keep your business in motion.
+          </h1>
 
           <p className="mx-auto mt-6 max-w-2xl text-lg text-muted-foreground">
             Manage inventory, orders, customers, and purchasing from one
@@ -33,9 +35,9 @@ const HomeBody = () => {
           </div>
 
           {/* Dashboard Preview */}
-          <div className="mt-16 rounded-xl border p-8 text-left">
+          <div className="mt-12 rounded-xl border p-4 text-left md:mt-16 md:p-8">
             {/* Dashboard Header */}
-            <div className="flex items-start justify-between">
+            <div className="flex flex-col gap-4 md:flex-row md:items-start md:justify-between">
               <div>
                 <h2 className="text-2xl font-bold">Dashboard</h2>
 
@@ -48,8 +50,8 @@ const HomeBody = () => {
             </div>
 
             {/* KPI Cards */}
-            <div className="mt-8 grid grid-cols-4 gap-4">
-              <div className="rounded-lg border p-5">
+            <div className="mt-8 grid grid-cols-2 gap-3 md:grid-cols-4 md:gap-4">
+              <div className="rounded-lg border p-4 md:p-5">
                 <p className="text-sm text-muted-foreground">Revenue</p>
 
                 <p className="mt-2 text-2xl font-bold">$42,820</p>
@@ -59,7 +61,7 @@ const HomeBody = () => {
                 </p>
               </div>
 
-              <div className="rounded-lg border p-5">
+              <div className="rounded-lg border p-4 md:p-5">
                 <p className="text-sm text-muted-foreground">Orders</p>
 
                 <p className="mt-2 text-2xl font-bold">642</p>
@@ -69,7 +71,7 @@ const HomeBody = () => {
                 </p>
               </div>
 
-              <div className="rounded-lg border p-5">
+              <div className="rounded-lg border p-4 md:p-5">
                 <p className="text-sm text-muted-foreground">Products</p>
 
                 <p className="mt-2 text-2xl font-bold">184</p>
@@ -79,7 +81,7 @@ const HomeBody = () => {
                 </p>
               </div>
 
-              <div className="rounded-lg border p-5">
+              <div className="rounded-lg border p-4 md:p-5">
                 <p className="text-sm text-muted-foreground">Low Stock</p>
 
                 <p className="mt-2 text-2xl font-bold">8</p>
@@ -90,7 +92,7 @@ const HomeBody = () => {
               </div>
             </div>
             {/* Dashboard Bottom Section */}
-            <div className="mt-6 grid grid-cols-2 gap-6">
+            <div className="mt-6 grid grid-cols-1 gap-6 md:grid-cols-2">
               {/* Revenue Chart */}
               <div className="rounded-lg border p-5">
                 <div>
@@ -102,15 +104,15 @@ const HomeBody = () => {
                 </div>
 
                 {/* Fake Chart */}
-                <div className="mt-8 flex h-48 items-end gap-3">
-                  <div className="h-[35%] flex-1 rounded-t bg-muted" />
-                  <div className="h-[50%] flex-1 rounded-t bg-muted" />
-                  <div className="h-[42%] flex-1 rounded-t bg-muted" />
-                  <div className="h-[65%] flex-1 rounded-t bg-muted" />
-                  <div className="h-[58%] flex-1 rounded-t bg-muted" />
-                  <div className="h-[78%] flex-1 rounded-t bg-muted" />
-                  <div className="h-[70%] flex-1 rounded-t bg-muted" />
-                  <div className="h-[90%] flex-1 rounded-t bg-muted" />
+                <div className="mt-8 flex h-48 items-end gap-1.5 md:gap-3">
+                  <div className="h-[35%] flex-1 rounded-t bg-blue-700" />
+                  <div className="h-[50%] flex-1 rounded-t bg-blue-700" />
+                  <div className="h-[42%] flex-1 rounded-t bg-blue-700" />
+                  <div className="h-[65%] flex-1 rounded-t bg-blue-700" />
+                  <div className="h-[58%] flex-1 rounded-t bg-blue-700" />
+                  <div className="h-[78%] flex-1 rounded-t bg-blue-700" />
+                  <div className="h-[70%] flex-1 rounded-t bg-blue-700" />
+                  <div className="h-[90%] flex-1 rounded-t bg-blue-700" />
                 </div>
 
                 <div className="mt-3 flex justify-between text-xs text-muted-foreground">
@@ -184,14 +186,14 @@ const HomeBody = () => {
       </div>
 
       {/* Features */}
-      <div id="features" className="border-t px-6 py-24">
+      <div id="features" className="border-t px-4 py-16 md:px-6 md:py-24">
         <div className="mx-auto max-w-7xl">
           <div className="text-center">
             <p className="text-sm font-semibold uppercase tracking-wider">
               Everything You Need
             </p>
 
-            <h2 className="mt-3 text-4xl font-bold">
+            <h2 className="mt-3 text-3xl font-bold md:text-4xl">
               Run your operations from one place.
             </h2>
 
@@ -200,7 +202,7 @@ const HomeBody = () => {
             </p>
           </div>
 
-          <div className="mt-12 grid grid-cols-3 gap-6">
+          <div className="mt-10 grid grid-cols-1 gap-4 md:mt-12 md:grid-cols-3 md:gap-6">
             <div className="rounded-xl border p-6">
               <IconPackages className="h-12 w-12" />
               <h3 className="mt-4 text-xl font-semibold">Inventory</h3>
@@ -249,20 +251,20 @@ const HomeBody = () => {
       </div>
 
       {/* Explanation */}
-      <div id="how-it-works" className="border-t px-6 py-24">
+      <div id="how-it-works" className="border-t px-4 py-16 md:px-6 md:py-24">
         <div className="mx-auto max-w-7xl">
           <div className="text-center">
             <p className="text-sm font-semibold uppercase tracking-wider">
               How It Works
             </p>
 
-            <h2 className="mt-3 text-4xl font-bold">
+            <h2 className="mt-3 text-3xl font-bold md:text-4xl">
               Simple enough for everyday work.
             </h2>
           </div>
 
-          <div className="relative mt-16 grid grid-cols-3 gap-8">
-            <div className="absolute left-[16.67%] right-[16.67%] top-7 border-t" />
+          <div className="relative mt-12 grid grid-cols-1 gap-10 md:mt-16 md:grid-cols-3 md:gap-8">
+            <div className="absolute left-[16.67%] right-[16.67%] top-7 hidden border-t md:block" />
 
             <div className="relative text-center">
               <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-full border bg-background text-lg font-bold">
@@ -306,12 +308,12 @@ const HomeBody = () => {
       </div>
 
       {/* CTA */}
-      <div className="border-t px-6 py-24">
-        <div className="mx-auto max-w-5xl rounded-2xl border px-12 py-16 text-center">
+      <div className="border-t px-4 py-16 md:px-6 md:py-24">
+        <div className="mx-auto max-w-5xl rounded-2xl border px-6 py-12 text-center md:px-12 md:py-16">
           <p className="text-sm font-semibold uppercase tracking-wider">
             Get Started
           </p>
-          <h2 className="mt-3 text-4xl font-bold">
+          <h2 className="mt-3 text-3xl font-bold md:text-4xl">
             Ready to take control of your operations?
           </h2>
           <p className="mx-auto mt-4 max-w-xl text-muted-foreground">
@@ -328,7 +330,7 @@ const HomeBody = () => {
 
       {/* Footer */}
       <div className="border-t px-6 py-8">
-        <div className="mx-auto flex max-w-7xl items-center justify-between">
+        <div className="mx-auto flex max-w-7xl flex-col items-center gap-4 text-center md:flex-row md:justify-between">
           <p className="font-semibold">StockFlow</p>
 
           <div className="flex items-center gap-6 text-sm">
