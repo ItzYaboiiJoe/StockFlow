@@ -20,11 +20,20 @@ import {
 } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
 import Link from "next/link";
+import {
+  registerUser,
+  createUser,
+  checkEmailExists,
+} from "../actions/register";
+import { useState } from "react";
+import { toast } from "@/components/ui/toast";
+import { useRouter } from "next/navigation";
+import { Spinner } from "@/components/ui/spinner";
 
 // Form Schema
 const registerSchema = z
   .object({
-    email: z.email("Enter a valid email").trim(),
+    email: z.email("Enter a valid email").trim().toLowerCase(),
     firstName: z
       .string()
       .min(2, "First name must be at least 2 characters long")
@@ -42,6 +51,10 @@ const registerSchema = z
   });
 
 const RegisterForm = () => {
+  // State to handle login errors
+  const [errorRegister, setErrorRegister] = useState<string | null>(null);
+  // State to control the spinner loading
+  const [loading, setLoading] = useState(false);
   // Create Form Instance
   const registerForm = useForm<z.infer<typeof registerSchema>>({
     resolver: zodResolver(registerSchema),
@@ -54,9 +67,51 @@ const RegisterForm = () => {
     },
   });
 
+  const router = useRouter();
+
   // Form Submit Handler
-  function onSubmit(data: z.infer<typeof registerSchema>) {
-    console.log(data);
+  async function onSubmit(data: z.infer<typeof registerSchema>) {
+    // Clear Error
+    setErrorRegister(null);
+    // Activate loading spinner
+    setLoading(true);
+    try {
+      // Check if the email exists
+      const emailExists = await checkEmailExists(data.email);
+      if (emailExists.length > 0) {
+        setLoading(false);
+        toast.add({
+          type: "error",
+          description: "This email already exists.",
+          priority: "high",
+        });
+        return;
+      }
+      // Register the user with email and password
+      const registerUserData = await registerUser(data.email, data.password);
+      // Create the user in the database
+      await createUser(
+        registerUserData.user!.id,
+        data.firstName,
+        data.lastName,
+        data.email,
+      );
+      // Display success message and disable spinner loading
+      toast.add({
+        type: "success",
+        description:
+          "Account created successfully. Please check your email to verify your account.",
+        priority: "high",
+      });
+      setLoading(false);
+      router.push("/login");
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        // Display Error Message and disable spinner loading
+        setErrorRegister(error.message);
+        setLoading(false);
+      }
+    }
   }
 
   return (
@@ -186,10 +241,26 @@ const RegisterForm = () => {
         </form>
       </CardContent>
       <CardFooter className="flex flex-col gap-4">
-        <Button type="submit" form="register-form" className="w-full">
-          Create Account
+        <Button
+          disabled={loading}
+          type="submit"
+          form="register-form"
+          className="w-full"
+        >
+          {loading ? (
+            <div className="flex items-center space-x-2">
+              <Spinner className="size-8" /> <span>Creating...</span>
+            </div>
+          ) : (
+            "Create Account"
+          )}
         </Button>
-
+        {/* Display Error Message */}
+        {errorRegister && (
+          <p className="text-md text-center text-red-700 font-semibold">
+            {errorRegister}
+          </p>
+        )}
         <p className="text-center text-sm text-muted-foreground">
           Already have an account?{" "}
           <Link

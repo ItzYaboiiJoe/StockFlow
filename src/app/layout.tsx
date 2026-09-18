@@ -2,8 +2,9 @@ import type { Metadata } from "next";
 import "../styles/globals.css";
 import { Inter } from "next/font/google";
 import { cn } from "@/lib/utils";
+import { Toaster } from "@/components/ui/toast";
 
-const inter = Inter({subsets:['latin'],variable:'--font-sans'});
+const inter = Inter({ subsets: ["latin"], variable: "--font-sans" });
 
 export const metadata: Metadata = {
   title: "StockFlow",
@@ -12,8 +13,12 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
-    <html lang="en" className={cn("h-full antialiased", "font-sans", inter.variable)}>
+    <html
+      lang="en"
+      className={cn("h-full antialiased", "font-sans", inter.variable)}
+    >
       <body className="min-h-full flex flex-col">{children}</body>
+      <Toaster />
     </html>
   );
 }
