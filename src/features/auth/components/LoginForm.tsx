@@ -20,6 +20,10 @@ import {
 } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
 import Link from "next/link";
+import { loginUser, checkUsersTable, authenticateUser } from "../actions/login";
+import { useState } from "react";
+import { useRouter } from "next/navigation";
+import { Spinner } from "@/components/ui/spinner";
 
 // Form Schema
 const loginSchema = z.object({
@@ -28,6 +32,11 @@ const loginSchema = z.object({
 });
 
 const LoginForm = () => {
+  // State to handle login errors
+  const [errorLogin, setErrorLogin] = useState<string | null>(null);
+  // State to control the spinner loading
+  const [loading, setLoading] = useState(false);
+
   // Create Form Instance
   const loginForm = useForm<z.infer<typeof loginSchema>>({
     resolver: zodResolver(loginSchema),
@@ -37,9 +46,32 @@ const LoginForm = () => {
     },
   });
 
+  const router = useRouter();
+
   // Form Submit Handler
-  function onSubmit(data: z.infer<typeof loginSchema>) {
-    console.log(data);
+  async function onSubmit(data: z.infer<typeof loginSchema>) {
+    // Clear Error
+    setErrorLogin(null);
+    // Activate loading spinner
+    setLoading(true);
+    try {
+      // Login the user using Supabase
+      const loginResponse = await loginUser(data.email, data.password);
+      // Fetch the uuid from the login response and check the users table for the authenticated value
+      const userDataResponse = await checkUsersTable(loginResponse.user.id);
+      // If the authenticated value is false, update it to true
+      if (!userDataResponse.authenticated) {
+        await authenticateUser(loginResponse.user.id);
+      }
+      // Redirect to the dashboard
+      setLoading(false);
+      router.push("/dashboard");
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        setErrorLogin(error.message);
+        setLoading(false);
+      }
+    }
   }
 
   return (
@@ -106,8 +138,21 @@ const LoginForm = () => {
       </CardContent>
       <CardFooter className="flex flex-col gap-4">
         <Button type="submit" form="login-form" className="w-full">
-          Sign In
+          {loading ? (
+            <div className="flex items-center space-x-2">
+              <Spinner className="size-8" /> <span>Signing in...</span>
+            </div>
+          ) : (
+            "Sign In"
+          )}
         </Button>
+
+        {/* Display Error Message */}
+        {errorLogin && (
+          <p className="text-md text-center text-red-700 font-semibold">
+            {errorLogin}
+          </p>
+        )}
 
         <p className="text-center text-sm text-muted-foreground">
           Don&apos;t have an account?{" "}
