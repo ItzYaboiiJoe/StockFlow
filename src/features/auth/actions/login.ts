@@ -16,7 +16,7 @@ export const checkUsersTable = async (uuid: string) => {
   const { data: user, error: userError } = await supabase
     .from("users")
     .select("*")
-    .eq("user_uuid", uuid)
+    .eq("user_id", uuid)
     .single();
 
   if (userError) throw userError;
@@ -29,7 +29,7 @@ export const authenticateUser = async (uuid: string) => {
   const { error: updateError } = await supabase
     .from("users")
     .update({ authenticated: true })
-    .eq("user_uuid", uuid);
+    .eq("user_id", uuid);
 
   if (updateError) throw updateError;
 };
