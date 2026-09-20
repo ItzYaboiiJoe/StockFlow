@@ -22,6 +22,8 @@ import { Input } from "@/components/ui/input";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { Spinner } from "@/components/ui/spinner";
+import { createBusiness, createBusinessOwner } from "../actions/createBusiness";
+import { toast } from "@/components/ui/toast";
 
 // Form Schema
 const onboardingSchema = z.object({
@@ -53,8 +55,26 @@ const OnboardingForm = () => {
     setErrorOnboarding(null);
     // Activate loading spinner
     setLoading(true);
-    console.log(data);
-    setLoading(false);
+    try {
+      // Insert business into DB
+      const businessID = await createBusiness(data.businessName);
+      // Create the user as business owner in DB
+      await createBusinessOwner(businessID.id);
+      // Show the user confirmation message
+      toast.add({
+        type: "success",
+        description: `Business ${data.businessName} Created!`,
+        priority: "high",
+      });
+      setLoading(false);
+      router.push("/dashboard");
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        // Display Error Message and disable spinner loading
+        setErrorOnboarding(error.message);
+        setLoading(false);
+      }
+    }
   }
 
   return (
