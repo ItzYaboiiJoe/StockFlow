@@ -51,7 +51,7 @@ const registerSchema = z
   });
 
 const RegisterForm = () => {
-  // State to handle login errors
+  // State to handle register errors
   const [errorRegister, setErrorRegister] = useState<string | null>(null);
   // State to control the spinner loading
   const [loading, setLoading] = useState(false);
