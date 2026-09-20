@@ -21,6 +21,7 @@ import {
 import { Input } from "@/components/ui/input";
 import Link from "next/link";
 import { loginUser, checkUsersTable, authenticateUser } from "../actions/login";
+import { checkUserBusiness } from "../actions/checkUserBusiness";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { Spinner } from "@/components/ui/spinner";
@@ -63,9 +64,14 @@ const LoginForm = () => {
       if (!userDataResponse.authenticated) {
         await authenticateUser(loginResponse.user.id);
       }
-      // Redirect to the dashboard
+      // Check if the user belongs in a business and route to the proper page
+      const totalBusiness = await checkUserBusiness();
+      if (totalBusiness! > 0) {
+        router.push("/dashboard");
+      } else {
+        router.push("/onboarding");
+      }
       setLoading(false);
-      router.push("/dashboard");
     } catch (error: unknown) {
       if (error instanceof Error) {
         setErrorLogin(error.message);
