@@ -9,18 +9,18 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+
 import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
   useSidebar,
 } from "@/components/ui/sidebar";
+
 import {
   IconSelector,
-  IconSparkles,
-  IconRosetteDiscountCheck,
-  IconCreditCard,
-  IconBell,
+  IconUser,
+  IconSettings,
   IconLogout,
 } from "@tabler/icons-react";
 
@@ -30,10 +30,10 @@ export function NavUser({
   user: {
     name: string;
     email: string;
-    avatar: string;
   };
 }) {
   const { isMobile } = useSidebar();
+
   return (
     <SidebarMenu>
       <SidebarMenuItem>
@@ -47,8 +47,10 @@ export function NavUser({
               <span className="truncate font-medium">{user.name}</span>
               <span className="truncate text-xs">{user.email}</span>
             </div>
+
             <IconSelector className="ml-auto size-4" />
           </DropdownMenuTrigger>
+
           <DropdownMenuContent
             className="w-fit"
             side={isMobile ? "bottom" : "right"}
@@ -65,29 +67,23 @@ export function NavUser({
                 </div>
               </DropdownMenuLabel>
             </DropdownMenuGroup>
+
             <DropdownMenuSeparator />
+
             <DropdownMenuGroup>
               <DropdownMenuItem>
-                <IconSparkles />
-                Upgrade to Pro
-              </DropdownMenuItem>
-            </DropdownMenuGroup>
-            <DropdownMenuSeparator />
-            <DropdownMenuGroup>
-              <DropdownMenuItem>
-                <IconRosetteDiscountCheck />
+                <IconUser />
                 Account
               </DropdownMenuItem>
+
               <DropdownMenuItem>
-                <IconCreditCard />
-                Billing
-              </DropdownMenuItem>
-              <DropdownMenuItem>
-                <IconBell />
-                Notifications
+                <IconSettings />
+                Settings
               </DropdownMenuItem>
             </DropdownMenuGroup>
+
             <DropdownMenuSeparator />
+
             <DropdownMenuItem>
               <IconLogout />
               Log out

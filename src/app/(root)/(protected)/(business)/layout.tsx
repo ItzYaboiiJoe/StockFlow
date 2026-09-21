@@ -40,13 +40,28 @@ const BusinessLayout = async ({
 
   if (businessError) throw businessError;
 
+  // Fetch user information
+  const { data: userInfo, error: userInfoError } = await supabase
+    .from("users")
+    .select("first_name, last_name, email")
+    .eq("user_id", user!.id)
+    .single();
+
+  if (userInfoError) throw userInfoError;
+
   return (
     <SidebarProvider>
-      <AppSidebar />
+      <AppSidebar
+        businessName={business.name}
+        user={{
+          name: `${userInfo.first_name} ${userInfo.last_name}`,
+          email: userInfo.email,
+        }}
+      />
 
       <SidebarInset>
         <header className="flex h-16 items-center border-b px-4">
-          <SidebarTrigger />
+          <SidebarTrigger className="-ml-1" />
         </header>
 
         <main className="flex-1">{children}</main>
