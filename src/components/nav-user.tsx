@@ -23,6 +23,9 @@ import {
   IconSettings,
   IconLogout,
 } from "@tabler/icons-react";
+import { supabase } from "@/lib/db/supabaseClient";
+import { useRouter } from "next/navigation";
+import { toast } from "@/components/ui/toast";
 
 export function NavUser({
   user,
@@ -33,6 +36,19 @@ export function NavUser({
   };
 }) {
   const { isMobile } = useSidebar();
+
+  const router = useRouter();
+
+  const handleSignOut = async () => {
+    const { error } = await supabase.auth.signOut();
+    if (error) throw error;
+    toast.add({
+      type: "success",
+      description: "Successfully signed out.",
+      priority: "high",
+    });
+    router.push("/login");
+  };
 
   return (
     <SidebarMenu>
@@ -75,18 +91,13 @@ export function NavUser({
                 <IconUser />
                 Account
               </DropdownMenuItem>
-
-              <DropdownMenuItem>
-                <IconSettings />
-                Settings
-              </DropdownMenuItem>
             </DropdownMenuGroup>
 
             <DropdownMenuSeparator />
 
-            <DropdownMenuItem>
+            <DropdownMenuItem onClick={handleSignOut}>
               <IconLogout />
-              Log out
+              Sign Out
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
