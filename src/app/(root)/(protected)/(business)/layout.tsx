@@ -1,6 +1,11 @@
-import Navbar from "@/components/shared/Navbar";
 import { createSupabaseServerClient } from "@/lib/db/supabaseServer";
 import { redirect } from "next/navigation";
+import { AppSidebar } from "@/components/app-sidebar";
+import {
+  SidebarInset,
+  SidebarProvider,
+  SidebarTrigger,
+} from "@/components/ui/sidebar";
 
 const BusinessLayout = async ({
   children,
@@ -36,10 +41,17 @@ const BusinessLayout = async ({
   if (businessError) throw businessError;
 
   return (
-    <>
-      <Navbar businessName={business.name} />
-      {children}
-    </>
+    <SidebarProvider>
+      <AppSidebar />
+
+      <SidebarInset>
+        <header className="flex h-16 items-center border-b px-4">
+          <SidebarTrigger />
+        </header>
+
+        <main className="flex-1">{children}</main>
+      </SidebarInset>
+    </SidebarProvider>
   );
 };
 
