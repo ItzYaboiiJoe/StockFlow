@@ -59,12 +59,16 @@ export function NavUser({
               <SidebarMenuButton size="lg" className="aria-expanded:bg-muted" />
             }
           >
-            <div className="grid flex-1 text-left text-sm leading-tight">
+            <div className="hidden size-8 items-center justify-center rounded-full bg-gray-300 font-medium group-data-[collapsible=icon]:flex">
+              {user.name.charAt(0).toUpperCase()}
+            </div>
+
+            <div className="grid flex-1 text-left text-sm leading-tight group-data-[collapsible=icon]:hidden">
               <span className="truncate font-medium">{user.name}</span>
               <span className="truncate text-xs">{user.email}</span>
             </div>
 
-            <IconSelector className="ml-auto size-4" />
+            <IconSelector className="ml-auto size-4 group-data-[collapsible=icon]:hidden" />
           </DropdownMenuTrigger>
 
           <DropdownMenuContent

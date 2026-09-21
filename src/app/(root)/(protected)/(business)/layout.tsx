@@ -6,6 +6,7 @@ import {
   SidebarProvider,
   SidebarTrigger,
 } from "@/components/ui/sidebar";
+import AppBreadcrumb from "@/components/app-breadcrumb";
 
 const BusinessLayout = async ({
   children,
@@ -60,8 +61,9 @@ const BusinessLayout = async ({
       />
 
       <SidebarInset>
-        <header className="flex h-16 items-center border-b px-4">
-          <SidebarTrigger className="-ml-1" />
+        <header className="flex h-16 items-center gap-2 border-b px-4">
+          <SidebarTrigger />
+          <AppBreadcrumb />
         </header>
 
         <main className="flex-1">{children}</main>
