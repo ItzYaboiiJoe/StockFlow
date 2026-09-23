@@ -6,7 +6,7 @@ import { fetchProducts } from "../actions/fetchProducts";
 const Products = async () => {
   // Fetch Products
   const products = await fetchProducts();
-  console.log(products);
+
   return (
     <div className="p-10">
       {/* Header */}
