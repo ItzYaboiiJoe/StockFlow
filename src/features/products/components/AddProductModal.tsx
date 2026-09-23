@@ -1,3 +1,6 @@
+"use client";
+
+import { useState } from "react";
 import {
   Dialog,
   DialogContent,
@@ -9,8 +12,11 @@ import {
 import AddProductForm from "./AddProductForm";
 
 const AddProductModal = ({ children }: { children: React.ReactElement }) => {
+  // Control modal open and close
+  const [open, setOpen] = useState(false);
+
   return (
-    <Dialog>
+    <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger render={children} />
       <DialogContent className="sm:max-w-xl">
         <DialogHeader>
@@ -19,7 +25,7 @@ const AddProductModal = ({ children }: { children: React.ReactElement }) => {
             Add a new product to your inventory.
           </DialogDescription>
         </DialogHeader>
-        <AddProductForm />
+        <AddProductForm onSuccess={() => setOpen(false)} />
       </DialogContent>
     </Dialog>
   );

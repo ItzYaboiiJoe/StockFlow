@@ -11,7 +11,6 @@ import {
   FieldLabel,
 } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
 import { useState } from "react";
 import { toast } from "@/components/ui/toast";
 import { Spinner } from "@/components/ui/spinner";
@@ -31,13 +30,17 @@ const addProductSchema = z.object({
     .min(0, "Price cannot be negative"),
   vCost: z.number().min(0, "Cost cannot be negative").optional(),
   vLowStockThreshold: z
-    .number()
+    .number({ error: "Low Stock Threshold must be a number" })
     .int("Low stock threshold must be a whole number")
-    .min(0, "Low stock threshold cannot be negative")
-    .optional(),
+    .min(0, "Low stock threshold cannot be negative"),
 });
 
-const AddProductForm = () => {
+const AddProductForm = ({ onSuccess }: { onSuccess: () => void }) => {
+  // State to handle add product errors
+  const [errorAdd, setErrorAdd] = useState<string | null>(null);
+  // State to control the spinner loading
+  const [loading, setLoading] = useState(false);
+
   // Create Form Instance
   const addProductForm = useForm<z.infer<typeof addProductSchema>>({
     resolver: zodResolver(addProductSchema),
@@ -55,7 +58,20 @@ const AddProductForm = () => {
 
   // Form Submit Handler
   async function onSubmit(data: z.infer<typeof addProductSchema>) {
+    // Clear Error
+    setErrorAdd(null);
+    // Activate loading spinner
+    setLoading(true);
     console.log(data);
+    // Display success message and disable spinner loading
+    toast.add({
+      type: "success",
+      description: `Product ${data.pName} Added Successfully`,
+      priority: "high",
+    });
+    setLoading(false);
+    // Close modal
+    onSuccess();
   }
 
   return (
@@ -272,8 +288,21 @@ const AddProductForm = () => {
       {/* Submit Button */}
       <div className="flex justify-end mt-5">
         <Button type="submit" form="add-product-form">
-          Add Product
+          {loading ? (
+            <div className="flex items-center space-x-2">
+              <Spinner className="size-8" /> <span>Adding Product...</span>
+            </div>
+          ) : (
+            "Add Product"
+          )}
         </Button>
+
+        {/* Display Error Message */}
+        {errorAdd && (
+          <p className="text-md text-center text-red-700 font-semibold">
+            {errorAdd}
+          </p>
+        )}
       </div>
     </div>
   );
