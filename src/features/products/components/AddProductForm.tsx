@@ -14,6 +14,11 @@ import { Input } from "@/components/ui/input";
 import { useState } from "react";
 import { toast } from "@/components/ui/toast";
 import { Spinner } from "@/components/ui/spinner";
+import {
+  getCurrentBusinessID,
+  addProductInfo,
+  addProductVariant,
+} from "../actions/addProduct";
 
 // Form Schema
 const addProductSchema = z.object({
@@ -62,16 +67,41 @@ const AddProductForm = ({ onSuccess }: { onSuccess: () => void }) => {
     setErrorAdd(null);
     // Activate loading spinner
     setLoading(true);
-    console.log(data);
-    // Display success message and disable spinner loading
-    toast.add({
-      type: "success",
-      description: `Product ${data.pName} Added Successfully`,
-      priority: "high",
-    });
-    setLoading(false);
-    // Close modal
-    onSuccess();
+    try {
+      // Fetch Business ID
+      const businessID = await getCurrentBusinessID();
+      // Insert Product Info to DB
+      const productID = await addProductInfo(
+        businessID,
+        data.pName,
+        data.pDescription!,
+        data.pCategory!,
+      );
+      //Insert Variant Info to DB
+      await addProductVariant(
+        productID.id,
+        data.vSKU,
+        data.vName,
+        data.vPrice,
+        data.vCost!,
+        data.vLowStockThreshold,
+      );
+      // Display success message and disable spinner loading
+      toast.add({
+        type: "success",
+        description: `Product ${data.pName} Added Successfully`,
+        priority: "high",
+      });
+      setLoading(false);
+      // Close modal
+      onSuccess();
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        // Display Error Message and disable spinner loading
+        setErrorAdd(error.message);
+        setLoading(false);
+      }
+    }
   }
 
   return (
