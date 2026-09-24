@@ -25,11 +25,28 @@ const addProductSchema = z.object({
   pName: z
     .string()
     .trim()
-    .min(3, "Product name must be at least 3 characters long"),
-  pDescription: z.string().trim().optional(),
-  pCategory: z.string().trim().optional(),
-  vName: z.string().trim().min(1, "Variant name cannot be empty"),
-  vSKU: z.string().trim().min(4, "SKU must be at least 4 characters long"),
+    .min(3, "Product name must be at least 3 characters long")
+    .max(60, "Product name must be 100 characters or less"),
+  pDescription: z
+    .string()
+    .trim()
+    .max(500, "Product description must be 500 characters or less")
+    .optional(),
+  pCategory: z
+    .string()
+    .trim()
+    .max(50, "Product category must be 50 characters or less")
+    .optional(),
+  vName: z
+    .string()
+    .trim()
+    .min(1, "Variant name cannot be empty")
+    .max(50, "Variant name must be 100 characters or less"),
+  vSKU: z
+    .string()
+    .trim()
+    .min(4, "SKU must be at least 4 characters long")
+    .max(40, "Product sku must be 50 characters or less"),
   vPrice: z
     .number({ error: "Price must be a number" })
     .min(0, "Price cannot be negative"),
@@ -127,6 +144,7 @@ const AddProductForm = ({ onSuccess }: { onSuccess: () => void }) => {
                   id="add-product-form-pName"
                   aria-invalid={fieldState.invalid}
                   type="text"
+                  maxLength={60}
                   placeholder="e.g. Classic T-Shirt"
                 />
                 {fieldState.invalid && (
@@ -149,6 +167,7 @@ const AddProductForm = ({ onSuccess }: { onSuccess: () => void }) => {
                   id="add-product-form-pDescription"
                   aria-invalid={fieldState.invalid}
                   type="text"
+                  maxLength={500}
                   placeholder="Optional product description"
                 />
                 {fieldState.invalid && (
@@ -171,6 +190,7 @@ const AddProductForm = ({ onSuccess }: { onSuccess: () => void }) => {
                   id="add-product-form-pCategory"
                   aria-invalid={fieldState.invalid}
                   type="text"
+                  maxLength={50}
                   placeholder="e.g. Clothing"
                 />
                 {fieldState.invalid && (
@@ -196,6 +216,7 @@ const AddProductForm = ({ onSuccess }: { onSuccess: () => void }) => {
                     id="add-product-form-vName"
                     aria-invalid={fieldState.invalid}
                     type="text"
+                    maxLength={50}
                     placeholder="e.g. Black / Large"
                   />
                   {fieldState.invalid && (
@@ -216,6 +237,7 @@ const AddProductForm = ({ onSuccess }: { onSuccess: () => void }) => {
                     id="add-product-form-vSKU"
                     aria-invalid={fieldState.invalid}
                     type="text"
+                    maxLength={40}
                     placeholder="e.g. SHIRT-BLK-L"
                   />
                   {fieldState.invalid && (

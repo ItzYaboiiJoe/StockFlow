@@ -29,10 +29,10 @@ const ProductVariantsTable = ({
         <TableBody>
           {variants.map((variant) => (
             <TableRow key={variant.id}>
-              <TableCell className="px-5 font-medium">
+              <TableCell className="max-w-80 truncate px-5 font-medium">
                 {variant.variant_name}
               </TableCell>
-              <TableCell>{variant.sku}</TableCell>
+              <TableCell className="max-w-80 truncate">{variant.sku}</TableCell>
               <TableCell>${Number(variant.price).toFixed(2)}</TableCell>
               <TableCell>
                 {variant.cost !== null
