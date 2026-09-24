@@ -6,6 +6,11 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import {
+  HoverCard,
+  HoverCardContent,
+  HoverCardTrigger,
+} from "@/components/ui/hover-card";
 import { ProductVariantsInfo } from "../actions/fetchProducts";
 
 const ProductVariantsTable = ({
@@ -29,8 +34,13 @@ const ProductVariantsTable = ({
         <TableBody>
           {variants.map((variant) => (
             <TableRow key={variant.id}>
-              <TableCell className="max-w-80 truncate px-5 font-medium">
-                {variant.variant_name}
+              <TableCell className="max-w-80 px-5 font-medium">
+                <HoverCard>
+                  <HoverCardTrigger className="block truncate">
+                    {variant.variant_name}
+                  </HoverCardTrigger>
+                  <HoverCardContent>{variant.variant_name}</HoverCardContent>
+                </HoverCard>
               </TableCell>
               <TableCell className="max-w-80 truncate">{variant.sku}</TableCell>
               <TableCell>${Number(variant.price).toFixed(2)}</TableCell>
