@@ -14,7 +14,7 @@ const ProductVariantsTable = ({
   variants: ProductVariantsInfo[];
 }) => {
   return (
-    <div className="mt-10 max-w-4xl mx-auto overflow-hidden rounded-xl border">
+    <div className="mt-5 max-w-4xl mx-auto overflow-hidden rounded-xl border">
       <Table>
         <TableHeader className="bg-muted/50">
           <TableRow>

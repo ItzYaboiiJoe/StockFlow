@@ -54,3 +54,17 @@ export const fetchVariants = async (productID: string) => {
 
   return data;
 };
+
+// Fetch Specific Product
+export const specificProductInfo = async (id: string) => {
+  const supabase = await createSupabaseServerClient();
+  const { data, error } = await supabase
+    .from("products")
+    .select("id, name, description, category, active")
+    .eq("id", id)
+    .single();
+
+  if (error) throw error;
+
+  return data;
+};
