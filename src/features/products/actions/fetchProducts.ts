@@ -8,6 +8,15 @@ export type ProductInfo = {
   active: boolean;
 };
 
+export type ProductVariantsInfo = {
+  id: number;
+  sku: string;
+  variant_name: string;
+  price: number;
+  cost: number | null;
+  low_stock_threshold: number;
+};
+
 // Fetch Products
 export const fetchProducts = async () => {
   const supabase = await createSupabaseServerClient();
@@ -25,6 +34,20 @@ export const fetchProducts = async () => {
     .from("products")
     .select("id, name, description, category, active")
     .eq("business_id", businessUser.business_id)
+    .order("created_at", { ascending: false });
+
+  if (error) throw error;
+
+  return data;
+};
+
+// Fetch Product Variants
+export const fetchVariants = async (productID: string) => {
+  const supabase = await createSupabaseServerClient();
+  const { data, error } = await supabase
+    .from("product_variant")
+    .select("id, sku, variant_name, price, cost, low_stock_threshold")
+    .eq("product_id", productID)
     .order("created_at", { ascending: false });
 
   if (error) throw error;

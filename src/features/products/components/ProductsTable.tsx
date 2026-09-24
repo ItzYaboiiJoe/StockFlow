@@ -12,7 +12,7 @@ import Link from "next/link";
 
 const ProductsTable = ({ products }: { products: ProductInfo[] }) => {
   return (
-    <div className="mt-10 overflow-hidden rounded-xl border">
+    <div className="mt-10 max-w-4xl mx-auto overflow-hidden rounded-xl border">
       <Table>
         <TableHeader className="bg-muted/50">
           <TableRow>

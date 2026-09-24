@@ -1,3 +1,5 @@
+import ProductVariants from "@/features/products/components/ProductVariants";
+
 const ProductIdPage = async ({
   params,
 }: {
@@ -5,7 +7,7 @@ const ProductIdPage = async ({
 }) => {
   const { productId } = await params;
 
-  return <div>Product ID: {productId}</div>;
+  return <ProductVariants productId={productId} />;
 };
 
 export default ProductIdPage;
