@@ -4,6 +4,7 @@ import ProductVariantsDetails from "./ProductVariantsDetails";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { IconArrowLeft } from "@tabler/icons-react";
+import AddProductVariantsModal from "./AddProductVariantsModal";
 
 const ProductVariants = async ({ productId }: { productId: string }) => {
   const variants = await fetchVariants(productId);
@@ -24,7 +25,10 @@ const ProductVariants = async ({ productId }: { productId: string }) => {
       <div className="mx-auto mt-8 flex max-w-4xl items-center justify-between">
         <h2 className="text-lg font-semibold">Variants</h2>
 
-        <Button>Add Variant</Button>
+        {/* Open Add Variants Modal */}
+        <AddProductVariantsModal productId={productId}>
+          <Button>Add Variant</Button>
+        </AddProductVariantsModal>
       </div>
       {/* Variants Table */}
       <ProductVariantsTable variants={variants} />

@@ -12,6 +12,7 @@ import {
   HoverCardTrigger,
 } from "@/components/ui/hover-card";
 import { ProductVariantsInfo } from "../actions/fetchProducts";
+import { Badge } from "@/components/ui/badge";
 
 const ProductVariantsTable = ({
   variants,
@@ -28,6 +29,7 @@ const ProductVariantsTable = ({
             <TableHead>Price</TableHead>
             <TableHead>Cost</TableHead>
             <TableHead>Low Stock Threshold</TableHead>
+            <TableHead>Status</TableHead>
           </TableRow>
         </TableHeader>
 
@@ -50,6 +52,11 @@ const ProductVariantsTable = ({
                   : "—"}
               </TableCell>
               <TableCell>{variant.low_stock_threshold}</TableCell>
+              <TableCell>
+                <Badge variant={variant.active ? "default" : "destructive"}>
+                  {variant.active ? "Active" : "Inactive"}
+                </Badge>
+              </TableCell>
             </TableRow>
           ))}
         </TableBody>

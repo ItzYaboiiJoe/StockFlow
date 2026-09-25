@@ -15,6 +15,7 @@ export type ProductVariantsInfo = {
   price: number;
   cost: number | null;
   low_stock_threshold: number;
+  active: boolean;
 };
 
 // Fetch Products
@@ -46,7 +47,7 @@ export const fetchVariants = async (productID: string) => {
   const supabase = await createSupabaseServerClient();
   const { data, error } = await supabase
     .from("product_variant")
-    .select("id, sku, variant_name, price, cost, low_stock_threshold")
+    .select("id, sku, variant_name, price, cost, low_stock_threshold, active")
     .eq("product_id", productID)
     .order("created_at", { ascending: false });
 
