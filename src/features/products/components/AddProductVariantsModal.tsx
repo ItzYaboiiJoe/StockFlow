@@ -9,6 +9,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
+import AddProductVariantsForm from "./AddProductVariantsForm";
 
 const AddProductVariantsModal = ({
   children,
@@ -30,7 +31,10 @@ const AddProductVariantsModal = ({
             Add a new product variant to your inventory.
           </DialogDescription>
         </DialogHeader>
-        <div>Form Here:</div>
+        <AddProductVariantsForm
+          onSuccess={() => setOpen(false)}
+          productId={productId}
+        />
       </DialogContent>
     </Dialog>
   );

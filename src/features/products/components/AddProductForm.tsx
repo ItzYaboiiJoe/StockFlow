@@ -26,7 +26,7 @@ const addProductSchema = z.object({
     .string()
     .trim()
     .min(3, "Product name must be at least 3 characters long")
-    .max(60, "Product name must be 100 characters or less"),
+    .max(60, "Product name must be 60 characters or less"),
   pDescription: z
     .string()
     .trim()
@@ -41,12 +41,12 @@ const addProductSchema = z.object({
     .string()
     .trim()
     .min(1, "Variant name cannot be empty")
-    .max(50, "Variant name must be 100 characters or less"),
+    .max(50, "Variant name must be 50 characters or less"),
   vSKU: z
     .string()
     .trim()
     .min(4, "SKU must be at least 4 characters long")
-    .max(40, "Product sku must be 50 characters or less"),
+    .max(40, "Product sku must be 40 characters or less"),
   vPrice: z
     .number({ error: "Price must be a number" })
     .min(0, "Price cannot be negative"),
