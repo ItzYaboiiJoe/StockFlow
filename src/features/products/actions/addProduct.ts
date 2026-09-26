@@ -18,8 +18,8 @@ export const getCurrentBusinessID = async () => {
 export const addProductInfo = async (
   businessID: number,
   name: string,
-  description: string,
-  category: string,
+  description: string | undefined,
+  category: string | undefined,
 ) => {
   const { data, error } = await supabase
     .from("products")
@@ -43,7 +43,7 @@ export const addProductVariant = async (
   sku: string,
   variantName: string,
   price: number,
-  cost: number,
+  cost: number | undefined,
   lowStockThreshold: number,
 ) => {
   const { error } = await supabase.from("product_variant").insert([

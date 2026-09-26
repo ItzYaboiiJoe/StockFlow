@@ -91,8 +91,8 @@ const AddProductForm = ({ onSuccess }: { onSuccess: () => void }) => {
       const productID = await addProductInfo(
         businessID,
         data.pName,
-        data.pDescription!,
-        data.pCategory!,
+        data.pDescription,
+        data.pCategory,
       );
       //Insert Variant Info to DB
       await addProductVariant(
@@ -100,7 +100,7 @@ const AddProductForm = ({ onSuccess }: { onSuccess: () => void }) => {
         data.vSKU,
         data.vName,
         data.vPrice,
-        data.vCost!,
+        data.vCost,
         data.vLowStockThreshold,
       );
       // Display success message and disable spinner loading

@@ -14,6 +14,7 @@ import { Input } from "@/components/ui/input";
 import { useState } from "react";
 import { toast } from "@/components/ui/toast";
 import { Spinner } from "@/components/ui/spinner";
+import { addNewVariant } from "../actions/addVariants";
 
 // Form Schema
 const addProductVariantsSchema = z.object({
@@ -63,9 +64,36 @@ const AddProductVariantsForm = ({
 
   // Form Submit Handler
   async function onSubmit(data: z.infer<typeof addProductVariantsSchema>) {
-    console.log(data);
-    console.log(productId);
-    onSuccess();
+    // Clear Error
+    setErrorAdd(null);
+    // Activate loading spinner
+    setLoading(true);
+    try {
+      // Insert Variant into DB
+      await addNewVariant(
+        productId,
+        data.vSKU,
+        data.vName,
+        data.vPrice,
+        data.vCost,
+        data.vLowStockThreshold,
+      );
+      // Display success message and disable spinner loading
+      toast.add({
+        type: "success",
+        description: `Variant ${data.vName} Added Successfully`,
+        priority: "high",
+      });
+      setLoading(false);
+      // Close modal
+      onSuccess();
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        // Display Error Message and disable spinner loading
+        setErrorAdd(error.message);
+        setLoading(false);
+      }
+    }
   }
 
   return (
