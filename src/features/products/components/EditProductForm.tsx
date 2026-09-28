@@ -16,6 +16,7 @@ import { useState } from "react";
 import { toast } from "@/components/ui/toast";
 import { Spinner } from "@/components/ui/spinner";
 import { ProductInfo } from "../actions/fetchProducts";
+import { updateProductInfo } from "../actions/editProduct";
 
 // Form Schema
 const editProductSchema = z.object({
@@ -27,13 +28,11 @@ const editProductSchema = z.object({
   pDescription: z
     .string()
     .trim()
-    .max(500, "Product description must be 500 characters or less")
-    .optional(),
+    .max(500, "Product description must be 500 characters or less"),
   pCategory: z
     .string()
     .trim()
-    .max(50, "Product category must be 50 characters or less")
-    .optional(),
+    .max(50, "Product category must be 50 characters or less"),
   status: z.boolean(),
 });
 
@@ -69,7 +68,19 @@ const EditProductForm = ({
     // Activate loading spinner
     setLoading(true);
     try {
-      console.log(data);
+      await updateProductInfo(
+        productId,
+        data.pName,
+        data.pDescription,
+        data.pCategory,
+        data.status,
+      );
+      // Display success message and disable spinner loading
+      toast.add({
+        type: "success",
+        description: `${data.pName} updated successfully`,
+        priority: "high",
+      });
     } catch (error: unknown) {
       if (error instanceof Error) {
         // Display Error Message and disable spinner loading
