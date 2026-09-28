@@ -21,7 +21,7 @@ const ProductVariants = async ({ productId }: { productId: string }) => {
       </Link>
 
       {/* Header Product Information */}
-      <ProductVariantsDetails product={productInfo} />
+      <ProductVariantsDetails product={productInfo} productId={productId} />
       <div className="mx-auto mt-8 flex max-w-4xl items-center justify-between">
         <h2 className="text-lg font-semibold">Variants</h2>
 

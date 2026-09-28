@@ -9,17 +9,34 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
+import EditProductForm from "./EditProductForm";
+import { ProductInfo } from "../actions/fetchProducts";
 
-const EditProductModal = () => {
+const EditProductModal = ({
+  children,
+  productId,
+  product,
+}: {
+  children: React.ReactElement;
+  productId: string;
+  product: ProductInfo;
+}) => {
+  // Control modal open and close
+  const [open, setOpen] = useState(false);
+
   return (
-    <Dialog>
-      <DialogTrigger />
+    <Dialog open={open} onOpenChange={setOpen}>
+      <DialogTrigger render={children} />
       <DialogContent className="sm:max-w-xl">
         <DialogHeader>
           <DialogTitle>Edit Product</DialogTitle>
           <DialogDescription>Edit Product Information</DialogDescription>
         </DialogHeader>
-        Edit Product Form Here
+        <EditProductForm
+          onSuccess={() => setOpen(false)}
+          productId={productId}
+          product={product}
+        />
       </DialogContent>
     </Dialog>
   );
