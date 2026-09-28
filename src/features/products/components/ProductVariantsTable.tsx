@@ -11,8 +11,18 @@ import {
   HoverCardContent,
   HoverCardTrigger,
 } from "@/components/ui/hover-card";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuGroup,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 import { ProductVariantsInfo } from "../actions/fetchProducts";
 import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
 
 const ProductVariantsTable = ({
   variants,
@@ -30,6 +40,7 @@ const ProductVariantsTable = ({
             <TableHead>Cost</TableHead>
             <TableHead>Low Stock Threshold</TableHead>
             <TableHead>Status</TableHead>
+            <TableHead></TableHead>
           </TableRow>
         </TableHeader>
 
@@ -56,6 +67,24 @@ const ProductVariantsTable = ({
                 <Badge variant={variant.active ? "default" : "destructive"}>
                   {variant.active ? "Active" : "Inactive"}
                 </Badge>
+              </TableCell>
+              {/* Dropdown menu for edit and delete variants */}
+              <TableCell>
+                <DropdownMenu>
+                  <DropdownMenuTrigger
+                    render={<Button size={"xs"} variant="ghost" />}
+                  >
+                    ⋮
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent>
+                    <DropdownMenuGroup>
+                      <DropdownMenuItem>Edit Variant</DropdownMenuItem>
+                      <DropdownMenuItem variant="destructive">
+                        Delete Variant
+                      </DropdownMenuItem>
+                    </DropdownMenuGroup>
+                  </DropdownMenuContent>
+                </DropdownMenu>
               </TableCell>
             </TableRow>
           ))}
