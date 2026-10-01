@@ -1,5 +1,6 @@
 import { supabase } from "@/lib/db/supabaseClient";
 
+// Update a product variant by its ID
 export const updateVariantInfo = async (
   id: number,
   sku: string,

@@ -10,6 +10,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Button } from "@/components/ui/button";
 import EditProductVariantsModal from "./EditProductVariantsModal";
+import DeleteVariantsConfirmationModal from "./DeleteVariantsConfirmationModal";
 import { ProductVariantsInfo } from "../actions/fetchProducts";
 
 const ProductVariantsActions = ({
@@ -19,6 +20,8 @@ const ProductVariantsActions = ({
 }) => {
   // State to open the edit variant modal
   const [editOpen, setEditOpen] = useState(false);
+  // State to open the delete variant modal
+  const [deleteOpen, setDeleteOpen] = useState(false);
 
   return (
     <>
@@ -31,7 +34,10 @@ const ProductVariantsActions = ({
             <DropdownMenuItem onClick={() => setEditOpen(true)}>
               Edit Variant
             </DropdownMenuItem>
-            <DropdownMenuItem variant="destructive">
+            <DropdownMenuItem
+              variant="destructive"
+              onClick={() => setDeleteOpen(true)}
+            >
               Delete Variant
             </DropdownMenuItem>
           </DropdownMenuGroup>
@@ -41,6 +47,12 @@ const ProductVariantsActions = ({
       <EditProductVariantsModal
         open={editOpen}
         onOpenChange={setEditOpen}
+        variant={variant}
+      />
+      {/* Delete Variants Confirmation Modal */}
+      <DeleteVariantsConfirmationModal
+        open={deleteOpen}
+        onOpenChange={setDeleteOpen}
         variant={variant}
       />
     </>

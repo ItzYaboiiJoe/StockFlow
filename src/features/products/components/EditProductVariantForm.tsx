@@ -16,7 +16,7 @@ import { useState } from "react";
 import { toast } from "@/components/ui/toast";
 import { Spinner } from "@/components/ui/spinner";
 import { ProductVariantsInfo } from "../actions/fetchProducts";
-import { updateVariantInfo } from "../actions/editVariant";
+import { updateVariantInfo } from "../actions/editVariants";
 
 // Form Schema
 const editVariantSchema = z.object({
