@@ -7,13 +7,17 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
+import EditProductVariantForm from "./EditProductVariantForm";
+import { ProductVariantsInfo } from "../actions/fetchProducts";
 
 const EditProductVariantsModal = ({
   open,
   onOpenChange,
+  variant,
 }: {
   open: boolean;
   onOpenChange: (open: boolean) => void;
+  variant: ProductVariantsInfo;
 }) => {
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
@@ -22,7 +26,10 @@ const EditProductVariantsModal = ({
           <DialogTitle>Edit Variant</DialogTitle>
           <DialogDescription>Edit the product variant.</DialogDescription>
         </DialogHeader>
-        Edit Form Here
+        <EditProductVariantForm
+          variant={variant}
+          onSuccess={() => onOpenChange(false)}
+        />
       </DialogContent>
     </Dialog>
   );

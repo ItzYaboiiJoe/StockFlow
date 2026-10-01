@@ -11,32 +11,15 @@ import {
   FieldLabel,
 } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
+import { Switch } from "@/components/ui/switch";
 import { useState } from "react";
 import { toast } from "@/components/ui/toast";
 import { Spinner } from "@/components/ui/spinner";
-import {
-  getCurrentBusinessID,
-  addProductInfo,
-  addProductVariant,
-} from "../actions/addProduct";
+import { ProductVariantsInfo } from "../actions/fetchProducts";
+import { updateVariantInfo } from "../actions/editVariant";
 
 // Form Schema
-const addProductSchema = z.object({
-  pName: z
-    .string()
-    .trim()
-    .min(3, "Product name must be at least 3 characters long")
-    .max(60, "Product name must be 60 characters or less"),
-  pDescription: z
-    .string()
-    .trim()
-    .max(500, "Product description must be 500 characters or less")
-    .optional(),
-  pCategory: z
-    .string()
-    .trim()
-    .max(50, "Product category must be 50 characters or less")
-    .optional(),
+const editVariantSchema = z.object({
   vName: z
     .string()
     .trim()
@@ -55,58 +38,53 @@ const addProductSchema = z.object({
     .number({ error: "Low Stock Threshold must be a number" })
     .int("Low stock threshold must be a whole number")
     .min(0, "Low stock threshold cannot be negative"),
+  status: z.boolean(),
 });
 
-const AddProductForm = ({ onSuccess }: { onSuccess: () => void }) => {
-  // State to handle add product errors
-  const [errorAdd, setErrorAdd] = useState<string | null>(null);
+const EditProductVariantForm = ({
+  onSuccess,
+  variant,
+}: {
+  onSuccess: () => void;
+  variant: ProductVariantsInfo;
+}) => {
+  // State to handle edit variant errors
+  const [errorEdit, setErrorEdit] = useState<string | null>(null);
   // State to control the spinner loading
   const [loading, setLoading] = useState(false);
 
   // Create Form Instance
-  const addProductForm = useForm<z.infer<typeof addProductSchema>>({
-    resolver: zodResolver(addProductSchema),
+  const editVariantForm = useForm<z.infer<typeof editVariantSchema>>({
+    resolver: zodResolver(editVariantSchema),
     defaultValues: {
-      pName: "",
-      pDescription: "",
-      pCategory: "",
-      vName: "",
-      vSKU: "",
-      vPrice: undefined,
-      vCost: undefined,
-      vLowStockThreshold: undefined,
+      vName: variant.variant_name,
+      vSKU: variant.sku,
+      vPrice: variant.price,
+      vCost: variant.cost ?? undefined,
+      vLowStockThreshold: variant.low_stock_threshold,
+      status: variant.active,
     },
   });
 
-  // Form Submit Handler
-  async function onSubmit(data: z.infer<typeof addProductSchema>) {
+  async function onSubmit(data: z.infer<typeof editVariantSchema>) {
     // Clear Error
-    setErrorAdd(null);
+    setErrorEdit(null);
     // Activate loading spinner
     setLoading(true);
     try {
-      // Fetch Business ID
-      const businessID = await getCurrentBusinessID();
-      // Insert Product Info to DB
-      const productID = await addProductInfo(
-        businessID,
-        data.pName,
-        data.pDescription,
-        data.pCategory,
-      );
-      //Insert Variant Info to DB
-      await addProductVariant(
-        productID.id,
+      await updateVariantInfo(
+        variant.id,
         data.vSKU,
         data.vName,
         data.vPrice,
         data.vCost,
         data.vLowStockThreshold,
+        data.status,
       );
       // Display success message and disable spinner loading
       toast.add({
         type: "success",
-        description: `Product ${data.pName} Added Successfully`,
+        description: `${data.vName} updated successfully`,
         priority: "high",
       });
       // Close modal
@@ -114,7 +92,7 @@ const AddProductForm = ({ onSuccess }: { onSuccess: () => void }) => {
     } catch (error: unknown) {
       if (error instanceof Error) {
         // Display Error Message and disable spinner loading
-        setErrorAdd(error.message);
+        setErrorEdit(error.message);
         setLoading(false);
       }
     }
@@ -123,74 +101,26 @@ const AddProductForm = ({ onSuccess }: { onSuccess: () => void }) => {
   return (
     <div>
       <form
-        id="add-product-form"
-        onSubmit={addProductForm.handleSubmit(onSubmit)}
+        id="edit-variant-form"
+        onSubmit={editVariantForm.handleSubmit(onSubmit)}
       >
         <FieldGroup>
-          {/* Product Information */}
-          <div>Product Information</div>
-          {/* Product Name */}
+          {/* Variant Name */}
           <Controller
-            name="pName"
-            control={addProductForm.control}
+            name="vName"
+            control={editVariantForm.control}
             render={({ field, fieldState }) => (
               <Field data-invalid={fieldState.invalid}>
-                <FieldLabel htmlFor="add-product-form-pName">
-                  Product Name
+                <FieldLabel htmlFor="edit-variant-form-vName">
+                  Variant Name
                 </FieldLabel>
                 <Input
                   {...field}
-                  id="add-product-form-pName"
-                  aria-invalid={fieldState.invalid}
-                  type="text"
-                  maxLength={60}
-                  placeholder="e.g. Classic T-Shirt"
-                />
-                {fieldState.invalid && (
-                  <FieldError errors={[fieldState.error]} />
-                )}
-              </Field>
-            )}
-          />
-          {/* Description */}
-          <Controller
-            name="pDescription"
-            control={addProductForm.control}
-            render={({ field, fieldState }) => (
-              <Field data-invalid={fieldState.invalid}>
-                <FieldLabel htmlFor="add-product-form-pDescription">
-                  Description
-                </FieldLabel>
-                <Input
-                  {...field}
-                  id="add-product-form-pDescription"
-                  aria-invalid={fieldState.invalid}
-                  type="text"
-                  maxLength={500}
-                  placeholder="Optional product description"
-                />
-                {fieldState.invalid && (
-                  <FieldError errors={[fieldState.error]} />
-                )}
-              </Field>
-            )}
-          />
-          {/* Category */}
-          <Controller
-            name="pCategory"
-            control={addProductForm.control}
-            render={({ field, fieldState }) => (
-              <Field data-invalid={fieldState.invalid}>
-                <FieldLabel htmlFor="add-product-form-pCategory">
-                  Category
-                </FieldLabel>
-                <Input
-                  {...field}
-                  id="add-product-form-pCategory"
+                  id="edit-variant-form-vName"
                   aria-invalid={fieldState.invalid}
                   type="text"
                   maxLength={50}
-                  placeholder="e.g. Clothing"
+                  placeholder="e.g. Black / Large"
                 />
                 {fieldState.invalid && (
                   <FieldError errors={[fieldState.error]} />
@@ -198,60 +128,35 @@ const AddProductForm = ({ onSuccess }: { onSuccess: () => void }) => {
               </Field>
             )}
           />
-          {/* Variant Information */}
-          <div>Variant Information</div>
+          {/* SKU */}
+          <Controller
+            name="vSKU"
+            control={editVariantForm.control}
+            render={({ field, fieldState }) => (
+              <Field data-invalid={fieldState.invalid}>
+                <FieldLabel htmlFor="edit-variant-form-vSKU">SKU</FieldLabel>
+                <Input
+                  {...field}
+                  id="edit-variant-form-vSKU"
+                  aria-invalid={fieldState.invalid}
+                  type="text"
+                  maxLength={40}
+                  placeholder="e.g. SHIRT-BLK-L"
+                />
+                {fieldState.invalid && (
+                  <FieldError errors={[fieldState.error]} />
+                )}
+              </Field>
+            )}
+          />
           <div className="grid grid-cols-2 gap-4">
-            {/* Variant Name */}
-            <Controller
-              name="vName"
-              control={addProductForm.control}
-              render={({ field, fieldState }) => (
-                <Field data-invalid={fieldState.invalid}>
-                  <FieldLabel htmlFor="add-product-form-vName">
-                    Variant Name
-                  </FieldLabel>
-                  <Input
-                    {...field}
-                    id="add-product-form-vName"
-                    aria-invalid={fieldState.invalid}
-                    type="text"
-                    maxLength={50}
-                    placeholder="e.g. Black / Large"
-                  />
-                  {fieldState.invalid && (
-                    <FieldError errors={[fieldState.error]} />
-                  )}
-                </Field>
-              )}
-            />
-            {/* SKU */}
-            <Controller
-              name="vSKU"
-              control={addProductForm.control}
-              render={({ field, fieldState }) => (
-                <Field data-invalid={fieldState.invalid}>
-                  <FieldLabel htmlFor="add-product-form-vSKU">SKU</FieldLabel>
-                  <Input
-                    {...field}
-                    id="add-product-form-vSKU"
-                    aria-invalid={fieldState.invalid}
-                    type="text"
-                    maxLength={40}
-                    placeholder="e.g. SHIRT-BLK-L"
-                  />
-                  {fieldState.invalid && (
-                    <FieldError errors={[fieldState.error]} />
-                  )}
-                </Field>
-              )}
-            />
             {/* Price */}
             <Controller
               name="vPrice"
-              control={addProductForm.control}
+              control={editVariantForm.control}
               render={({ field, fieldState }) => (
                 <Field data-invalid={fieldState.invalid}>
-                  <FieldLabel htmlFor="add-product-form-vPrice">
+                  <FieldLabel htmlFor="edit-variant-form-vPrice">
                     Price
                   </FieldLabel>
                   <Input
@@ -264,7 +169,7 @@ const AddProductForm = ({ onSuccess }: { onSuccess: () => void }) => {
                           : e.target.valueAsNumber,
                       )
                     }
-                    id="add-product-form-vPrice"
+                    id="edit-variant-form-vPrice"
                     aria-invalid={fieldState.invalid}
                     type="number"
                     placeholder="0.00"
@@ -278,10 +183,12 @@ const AddProductForm = ({ onSuccess }: { onSuccess: () => void }) => {
             {/* Cost */}
             <Controller
               name="vCost"
-              control={addProductForm.control}
+              control={editVariantForm.control}
               render={({ field, fieldState }) => (
                 <Field data-invalid={fieldState.invalid}>
-                  <FieldLabel htmlFor="add-product-form-vCost">Cost</FieldLabel>
+                  <FieldLabel htmlFor="edit-variant-form-vCost">
+                    Cost
+                  </FieldLabel>
                   <Input
                     {...field}
                     value={field.value ?? ""}
@@ -292,7 +199,7 @@ const AddProductForm = ({ onSuccess }: { onSuccess: () => void }) => {
                           : e.target.valueAsNumber,
                       )
                     }
-                    id="add-product-form-vCost"
+                    id="edit-variant-form-vCost"
                     aria-invalid={fieldState.invalid}
                     type="number"
                     placeholder="0.00"
@@ -307,10 +214,10 @@ const AddProductForm = ({ onSuccess }: { onSuccess: () => void }) => {
           {/* Low Stock Threshold */}
           <Controller
             name="vLowStockThreshold"
-            control={addProductForm.control}
+            control={editVariantForm.control}
             render={({ field, fieldState }) => (
               <Field data-invalid={fieldState.invalid}>
-                <FieldLabel htmlFor="add-product-form-vLowStockThreshold">
+                <FieldLabel htmlFor="edit-variant-form-vLowStockThreshold">
                   Low Stock Threshold
                 </FieldLabel>
                 <Input
@@ -323,7 +230,7 @@ const AddProductForm = ({ onSuccess }: { onSuccess: () => void }) => {
                         : e.target.valueAsNumber,
                     )
                   }
-                  id="add-product-form-vLowStockThreshold"
+                  id="edit-variant-form-vLowStockThreshold"
                   aria-invalid={fieldState.invalid}
                   type="number"
                   placeholder="e.g. 5"
@@ -334,24 +241,51 @@ const AddProductForm = ({ onSuccess }: { onSuccess: () => void }) => {
               </Field>
             )}
           />
+          {/* Status */}
+          <Controller
+            name="status"
+            control={editVariantForm.control}
+            render={({ field }) => (
+              <Field>
+                <FieldLabel>Variant Status</FieldLabel>
+                <div className="flex items-center justify-between rounded-lg border p-3">
+                  <div>
+                    <p className="text-sm font-medium">
+                      {field.value ? "Active" : "Inactive"}
+                    </p>
+                    <p className="text-sm text-muted-foreground">
+                      {field.value
+                        ? "This variant is currently active."
+                        : "This variant is currently inactive."}
+                    </p>
+                  </div>
+                  <Switch
+                    id="edit-variant-form-status"
+                    checked={field.value}
+                    onCheckedChange={field.onChange}
+                  />
+                </div>
+              </Field>
+            )}
+          />
         </FieldGroup>
       </form>
       {/* Submit Button */}
       <div className="flex justify-end mt-5">
-        <Button type="submit" form="add-product-form">
+        <Button type="submit" form="edit-variant-form">
           {loading ? (
             <div className="flex items-center space-x-2">
-              <Spinner className="size-8" /> <span>Adding Product...</span>
+              <Spinner className="size-8" /> <span>Saving...</span>
             </div>
           ) : (
-            "Add Product"
+            "Save Changes"
           )}
         </Button>
 
         {/* Display Error Message */}
-        {errorAdd && (
+        {errorEdit && (
           <p className="text-md text-center text-red-700 font-semibold">
-            {errorAdd}
+            {errorEdit}
           </p>
         )}
       </div>
@@ -359,4 +293,4 @@ const AddProductForm = ({ onSuccess }: { onSuccess: () => void }) => {
   );
 };
 
-export default AddProductForm;
+export default EditProductVariantForm;

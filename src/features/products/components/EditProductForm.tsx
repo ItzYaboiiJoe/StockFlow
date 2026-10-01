@@ -81,6 +81,8 @@ const EditProductForm = ({
         description: `${data.pName} updated successfully`,
         priority: "high",
       });
+      // Close modal
+      onSuccess();
     } catch (error: unknown) {
       if (error instanceof Error) {
         // Display Error Message and disable spinner loading
@@ -88,8 +90,6 @@ const EditProductForm = ({
         setLoading(false);
       }
     }
-    // Close modal
-    onSuccess();
   }
 
   return (

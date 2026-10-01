@@ -61,7 +61,7 @@ const ProductVariantsTable = ({
               </TableCell>
               {/* Dropdown menu for edit and delete variants */}
               <TableCell>
-                <ProductVariantsActions />
+                <ProductVariantsActions variant={variant} />
               </TableCell>
             </TableRow>
           ))}

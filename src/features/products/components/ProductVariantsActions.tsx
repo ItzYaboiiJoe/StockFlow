@@ -10,8 +10,13 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Button } from "@/components/ui/button";
 import EditProductVariantsModal from "./EditProductVariantsModal";
+import { ProductVariantsInfo } from "../actions/fetchProducts";
 
-const ProductVariantsActions = () => {
+const ProductVariantsActions = ({
+  variant,
+}: {
+  variant: ProductVariantsInfo;
+}) => {
   // State to open the edit variant modal
   const [editOpen, setEditOpen] = useState(false);
 
@@ -33,7 +38,11 @@ const ProductVariantsActions = () => {
         </DropdownMenuContent>
       </DropdownMenu>
       {/* Edit Product Variants Modal */}
-      <EditProductVariantsModal open={editOpen} onOpenChange={setEditOpen} />
+      <EditProductVariantsModal
+        open={editOpen}
+        onOpenChange={setEditOpen}
+        variant={variant}
+      />
     </>
   );
 };

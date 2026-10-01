@@ -84,7 +84,6 @@ const AddProductVariantsForm = ({
         description: `Variant ${data.vName} Added Successfully`,
         priority: "high",
       });
-      setLoading(false);
       // Close modal
       onSuccess();
     } catch (error: unknown) {
