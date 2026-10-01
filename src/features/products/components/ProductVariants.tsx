@@ -3,7 +3,7 @@ import ProductVariantsTable from "./ProductVariantsTable";
 import ProductVariantsDetails from "./ProductVariantsDetails";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
-import { IconArrowLeft } from "@tabler/icons-react";
+import { IconArrowLeft, IconPackage, IconPlus } from "@tabler/icons-react";
 import AddProductVariantsModal from "./AddProductVariantsModal";
 
 const ProductVariants = async ({ productId }: { productId: string }) => {
@@ -30,8 +30,29 @@ const ProductVariants = async ({ productId }: { productId: string }) => {
           <Button>Add Variant</Button>
         </AddProductVariantsModal>
       </div>
-      {/* Variants Table */}
-      <ProductVariantsTable variants={variants} />
+
+      {/* If there are no variants display an empty page with a message to add variant else display the table with all variants */}
+      {variants.length === 0 ? (
+        <div className="mt-10 flex min-h-72 items-center justify-center rounded-lg border border-dashed">
+          <div className="text-center">
+            <IconPackage className="mx-auto mb-4 size-10 text-muted-foreground" />
+            <p className="font-medium">No variants available</p>
+
+            <p className="mt-1 text-sm text-muted-foreground">
+              Add a variant to your product to start tracking inventory.
+            </p>
+            <AddProductVariantsModal productId={productId}>
+              <Button className="mt-4">
+                <IconPlus />
+                Add Variant
+              </Button>
+            </AddProductVariantsModal>
+          </div>
+        </div>
+      ) : (
+        // Variants Table
+        <ProductVariantsTable variants={variants} />
+      )}
     </div>
   );
 };
