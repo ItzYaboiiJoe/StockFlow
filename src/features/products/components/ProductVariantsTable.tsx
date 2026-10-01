@@ -11,16 +11,9 @@ import {
   HoverCardContent,
   HoverCardTrigger,
 } from "@/components/ui/hover-card";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuGroup,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
 import { ProductVariantsInfo } from "../actions/fetchProducts";
 import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
+import ProductVariantsActions from "./ProductVariantsActions";
 
 const ProductVariantsTable = ({
   variants,
@@ -68,21 +61,7 @@ const ProductVariantsTable = ({
               </TableCell>
               {/* Dropdown menu for edit and delete variants */}
               <TableCell>
-                <DropdownMenu>
-                  <DropdownMenuTrigger
-                    render={<Button size={"xs"} variant="ghost" />}
-                  >
-                    ⋮
-                  </DropdownMenuTrigger>
-                  <DropdownMenuContent>
-                    <DropdownMenuGroup>
-                      <DropdownMenuItem>Edit Variant</DropdownMenuItem>
-                      <DropdownMenuItem variant="destructive">
-                        Delete Variant
-                      </DropdownMenuItem>
-                    </DropdownMenuGroup>
-                  </DropdownMenuContent>
-                </DropdownMenu>
+                <ProductVariantsActions />
               </TableCell>
             </TableRow>
           ))}
