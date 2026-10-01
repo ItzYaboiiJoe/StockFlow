@@ -338,7 +338,7 @@ const AddProductForm = ({ onSuccess }: { onSuccess: () => void }) => {
       </form>
       {/* Submit Button */}
       <div className="flex justify-end mt-5">
-        <Button type="submit" form="add-product-form">
+        <Button disabled={loading} type="submit" form="add-product-form">
           {loading ? (
             <div className="flex items-center space-x-2">
               <Spinner className="size-8" /> <span>Adding Product...</span>

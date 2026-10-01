@@ -199,7 +199,7 @@ const EditProductForm = ({
       </form>
       {/* Submit Button */}
       <div className="flex justify-end mt-5">
-        <Button type="submit" form="edit-product-form">
+        <Button disabled={loading} type="submit" form="edit-product-form">
           {loading ? (
             <div className="flex items-center space-x-2">
               <Spinner className="size-8" /> <span>Saving...</span>
