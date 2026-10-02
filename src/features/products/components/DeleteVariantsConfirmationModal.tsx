@@ -15,6 +15,7 @@ import { useState } from "react";
 import { toast } from "@/components/ui/toast";
 import { Spinner } from "@/components/ui/spinner";
 import { deleteVariant } from "../actions/deleteVariants";
+import { useRouter } from "next/navigation";
 
 const DeleteVariantsConfirmationModal = ({
   open,
@@ -26,6 +27,9 @@ const DeleteVariantsConfirmationModal = ({
   variant: ProductVariantsInfo;
 }) => {
   const [loading, setLoading] = useState(false);
+
+  const router = useRouter();
+
   // Handle the deletion of the variant
   const handleDelete = async () => {
     try {
@@ -37,6 +41,7 @@ const DeleteVariantsConfirmationModal = ({
         priority: "high",
       });
       onOpenChange(false);
+      router.refresh();
     } catch (error) {
       toast.add({
         type: "error",
