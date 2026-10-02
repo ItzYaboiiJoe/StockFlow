@@ -63,7 +63,7 @@ export const specificProductInfo = async (id: string) => {
     .from("products")
     .select("id, name, description, category, active")
     .eq("id", id)
-    .single();
+    .maybeSingle();
 
   if (error) throw error;
 

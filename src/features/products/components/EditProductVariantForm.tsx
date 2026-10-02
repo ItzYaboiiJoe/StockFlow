@@ -17,6 +17,7 @@ import { toast } from "@/components/ui/toast";
 import { Spinner } from "@/components/ui/spinner";
 import { ProductVariantsInfo } from "../actions/fetchProducts";
 import { updateVariantInfo } from "../actions/editVariants";
+import { useRouter } from "next/navigation";
 
 // Form Schema
 const editVariantSchema = z.object({
@@ -66,6 +67,8 @@ const EditProductVariantForm = ({
     },
   });
 
+  const router = useRouter();
+
   async function onSubmit(data: z.infer<typeof editVariantSchema>) {
     // Clear Error
     setErrorEdit(null);
@@ -89,6 +92,7 @@ const EditProductVariantForm = ({
       });
       // Close modal
       onSuccess();
+      router.refresh();
     } catch (error: unknown) {
       if (error instanceof Error) {
         // Display Error Message and disable spinner loading

@@ -5,10 +5,15 @@ import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { IconArrowLeft, IconPackage, IconPlus } from "@tabler/icons-react";
 import AddProductVariantsModal from "./AddProductVariantsModal";
+import { notFound } from "next/navigation";
 
 const ProductVariants = async ({ productId }: { productId: string }) => {
   const variants = await fetchVariants(productId);
   const productInfo = await specificProductInfo(productId);
+
+  if (!productInfo) {
+    notFound();
+  }
 
   return (
     <div className="p-10">
@@ -21,7 +26,7 @@ const ProductVariants = async ({ productId }: { productId: string }) => {
       </Link>
 
       {/* Header Product Information */}
-      <ProductVariantsDetails product={productInfo} productId={productId} />
+      <ProductVariantsDetails product={productInfo} />
       <div className="mx-auto mt-8 flex max-w-4xl items-center justify-between">
         <h2 className="text-lg font-semibold">Variants</h2>
 

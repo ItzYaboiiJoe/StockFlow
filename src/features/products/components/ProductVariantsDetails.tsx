@@ -2,14 +2,9 @@ import { ProductInfo } from "../actions/fetchProducts";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import EditProductModal from "./EditProductModal";
+import DeleteProductModal from "./DeleteProductModal";
 
-const ProductVariantsDetails = ({
-  product,
-  productId,
-}: {
-  product: ProductInfo;
-  productId: string;
-}) => {
+const ProductVariantsDetails = ({ product }: { product: ProductInfo }) => {
   return (
     <div className="mx-auto max-w-4xl">
       <div className="flex items-start justify-between">
@@ -30,10 +25,17 @@ const ProductVariantsDetails = ({
           </div>
         </div>
 
-        {/* Edit Modal Button */}
-        <EditProductModal productId={productId} product={product}>
-          <Button variant="outline">Edit Product</Button>
-        </EditProductModal>
+        <div className="flex items-center gap-2">
+          {/* Delete Product Button */}
+          <DeleteProductModal product={product}>
+            <Button variant="destructive">Delete Product</Button>
+          </DeleteProductModal>
+
+          {/* Edit Modal Button */}
+          <EditProductModal product={product}>
+            <Button variant="outline">Edit Product</Button>
+          </EditProductModal>
+        </div>
       </div>
 
       <p className="mt-5 text-sm text-muted-foreground">

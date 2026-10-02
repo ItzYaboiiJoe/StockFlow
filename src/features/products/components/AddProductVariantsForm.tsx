@@ -15,6 +15,7 @@ import { useState } from "react";
 import { toast } from "@/components/ui/toast";
 import { Spinner } from "@/components/ui/spinner";
 import { addNewVariant } from "../actions/addVariants";
+import { useRouter } from "next/navigation";
 
 // Form Schema
 const addProductVariantsSchema = z.object({
@@ -62,6 +63,8 @@ const AddProductVariantsForm = ({
     },
   });
 
+  const router = useRouter();
+
   // Form Submit Handler
   async function onSubmit(data: z.infer<typeof addProductVariantsSchema>) {
     // Clear Error
@@ -86,6 +89,7 @@ const AddProductVariantsForm = ({
       });
       // Close modal
       onSuccess();
+      router.refresh();
     } catch (error: unknown) {
       if (error instanceof Error) {
         // Display Error Message and disable spinner loading

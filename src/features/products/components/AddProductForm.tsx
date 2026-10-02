@@ -19,6 +19,7 @@ import {
   addProductInfo,
   addProductVariant,
 } from "../actions/addProduct";
+import { useRouter } from "next/navigation";
 
 // Form Schema
 const addProductSchema = z.object({
@@ -78,6 +79,8 @@ const AddProductForm = ({ onSuccess }: { onSuccess: () => void }) => {
     },
   });
 
+  const router = useRouter();
+
   // Form Submit Handler
   async function onSubmit(data: z.infer<typeof addProductSchema>) {
     // Clear Error
@@ -111,6 +114,7 @@ const AddProductForm = ({ onSuccess }: { onSuccess: () => void }) => {
       });
       // Close modal
       onSuccess();
+      router.refresh();
     } catch (error: unknown) {
       if (error instanceof Error) {
         // Display Error Message and disable spinner loading

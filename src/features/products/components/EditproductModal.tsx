@@ -14,11 +14,9 @@ import { ProductInfo } from "../actions/fetchProducts";
 
 const EditProductModal = ({
   children,
-  productId,
   product,
 }: {
   children: React.ReactElement;
-  productId: string;
   product: ProductInfo;
 }) => {
   // Control modal open and close
@@ -32,11 +30,7 @@ const EditProductModal = ({
           <DialogTitle>Edit Product</DialogTitle>
           <DialogDescription>Edit Product Information</DialogDescription>
         </DialogHeader>
-        <EditProductForm
-          onSuccess={() => setOpen(false)}
-          productId={productId}
-          product={product}
-        />
+        <EditProductForm onSuccess={() => setOpen(false)} product={product} />
       </DialogContent>
     </Dialog>
   );

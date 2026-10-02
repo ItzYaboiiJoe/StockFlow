@@ -17,6 +17,7 @@ import { toast } from "@/components/ui/toast";
 import { Spinner } from "@/components/ui/spinner";
 import { ProductInfo } from "../actions/fetchProducts";
 import { updateProductInfo } from "../actions/editProduct";
+import { useRouter } from "next/navigation";
 
 // Form Schema
 const editProductSchema = z.object({
@@ -38,11 +39,9 @@ const editProductSchema = z.object({
 
 const EditProductForm = ({
   onSuccess,
-  productId,
   product,
 }: {
   onSuccess: () => void;
-  productId: string;
   product: ProductInfo;
 }) => {
   // State to handle edit product errors
@@ -61,6 +60,8 @@ const EditProductForm = ({
     },
   });
 
+  const router = useRouter();
+
   // Form Submit Handler
   async function onSubmit(data: z.infer<typeof editProductSchema>) {
     // Clear Error
@@ -69,7 +70,7 @@ const EditProductForm = ({
     setLoading(true);
     try {
       await updateProductInfo(
-        productId,
+        product.id,
         data.pName,
         data.pDescription,
         data.pCategory,
@@ -83,6 +84,7 @@ const EditProductForm = ({
       });
       // Close modal
       onSuccess();
+      router.refresh();
     } catch (error: unknown) {
       if (error instanceof Error) {
         // Display Error Message and disable spinner loading

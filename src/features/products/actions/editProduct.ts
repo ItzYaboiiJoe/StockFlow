@@ -2,7 +2,7 @@ import { supabase } from "@/lib/db/supabaseClient";
 
 // Update Product Information
 export const updateProductInfo = async (
-  id: string,
+  id: number,
   name: string,
   description: string,
   category: string,

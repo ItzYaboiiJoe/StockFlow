@@ -9,38 +9,41 @@ import {
   AlertDialogFooter,
   AlertDialogHeader,
   AlertDialogTitle,
+  AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
-import { ProductVariantsInfo } from "../actions/fetchProducts";
-import { useState } from "react";
 import { toast } from "@/components/ui/toast";
 import { Spinner } from "@/components/ui/spinner";
-import { deleteVariant } from "../actions/deleteVariants";
+import { useState } from "react";
+import { ProductInfo } from "../actions/fetchProducts";
+import { deleteProduct } from "../actions/deleteProduct";
+import { useRouter } from "next/navigation";
 
-const DeleteVariantsConfirmationModal = ({
-  open,
-  onOpenChange,
-  variant,
+const DeleteProductModal = ({
+  children,
+  product,
 }: {
-  open: boolean;
-  onOpenChange: (open: boolean) => void;
-  variant: ProductVariantsInfo;
+  children: React.ReactElement;
+  product: ProductInfo;
 }) => {
   const [loading, setLoading] = useState(false);
-  // Handle the deletion of the variant
+
+  const router = useRouter();
+
+  // Handle Product Deletion
   const handleDelete = async () => {
     try {
       setLoading(true);
-      await deleteVariant(variant.id);
+      await deleteProduct(product.id);
       toast.add({
         type: "success",
-        description: `Variant ${variant.variant_name} deleted successfully`,
+        description: `Product ${product.name} deleted successfully`,
         priority: "high",
       });
-      onOpenChange(false);
+      router.push("/products");
     } catch (error) {
       toast.add({
         type: "error",
-        description: `Failed to delete variant ${variant.variant_name} : ${error}`,
+        description: `Failed to delete product ${product.name} : ${error}`,
         priority: "high",
       });
       setLoading(false);
@@ -48,14 +51,14 @@ const DeleteVariantsConfirmationModal = ({
   };
 
   return (
-    <AlertDialog open={open} onOpenChange={onOpenChange}>
+    <AlertDialog>
+      <AlertDialogTrigger render={children} />
       <AlertDialogContent>
         <AlertDialogHeader>
           <AlertDialogTitle>Are You Sure?</AlertDialogTitle>
           <AlertDialogDescription>
-            This action cannot be undone. This will permanently delete the{" "}
-            <span className="font-bold">{variant.variant_name}</span> variant
-            from this product.
+            This action cannot be undone. This will permanently delete{" "}
+            <span className="font-bold">{product.name}</span> Product.
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>
@@ -80,4 +83,4 @@ const DeleteVariantsConfirmationModal = ({
   );
 };
 
-export default DeleteVariantsConfirmationModal;
+export default DeleteProductModal;
