@@ -25,7 +25,7 @@ export const navMain = [
   },
   {
     title: "Inventory",
-    url: "#",
+    url: "/inventory",
     icon: <IconBuildingWarehouse />,
   },
   {
