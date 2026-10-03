@@ -29,4 +29,9 @@ export default defineConfig({
       use: { ...devices["Desktop Firefox"] },
     },
   ],
+  webServer: {
+    command: "npm run dev",
+    url: SITE_URL,
+    reuseExistingServer: !process.env.CI,
+  },
 });
