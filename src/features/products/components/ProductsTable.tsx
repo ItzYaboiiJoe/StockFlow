@@ -16,9 +16,9 @@ const ProductsTable = ({ products }: { products: ProductInfo[] }) => {
       <Table>
         <TableHeader className="bg-muted/50">
           <TableRow>
-            <TableHead className="px-5">Name</TableHead>
-            <TableHead>Category</TableHead>
-            <TableHead>Status</TableHead>
+            <TableHead className="w-[40%] px-5">Name</TableHead>
+            <TableHead className="w-[30%]">Category</TableHead>
+            <TableHead className="w-[30%]">Status</TableHead>
           </TableRow>
         </TableHeader>
 
