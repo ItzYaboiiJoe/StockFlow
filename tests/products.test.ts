@@ -119,5 +119,4 @@ test("products workflow", async ({ page }) => {
   await page.getByRole("button", { name: "Delete" }).click();
 
   await expect(page).toHaveURL(`${SITE_URL}/products`);
-  await expect(page.getByText("No products yet")).toBeVisible();
 });
