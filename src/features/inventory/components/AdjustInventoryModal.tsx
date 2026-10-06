@@ -10,11 +10,14 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import AdjustInventoryForm from "./AdjustInventoryForm";
+import { InventoryInfo } from "../actions/fetchInventory";
 
 const AdjustInventoryModal = ({
   children,
+  inventory,
 }: {
   children: React.ReactElement;
+  inventory: InventoryInfo[];
 }) => {
   // Control modal open and close
   const [open, setOpen] = useState(false);
@@ -30,7 +33,10 @@ const AdjustInventoryModal = ({
             the adjustment.
           </DialogDescription>
         </DialogHeader>
-        <AdjustInventoryForm onSuccess={() => setOpen(false)} />
+        <AdjustInventoryForm
+          onSuccess={() => setOpen(false)}
+          inventory={inventory}
+        />
       </DialogContent>
     </Dialog>
   );

@@ -18,6 +18,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { InventoryInfo } from "../actions/fetchInventory";
 import { Input } from "@/components/ui/input";
 import { useState } from "react";
 import { toast } from "@/components/ui/toast";
@@ -26,7 +27,7 @@ import { useRouter } from "next/navigation";
 
 // Form schema
 const adjustInventorySchema = z.object({
-  productVariantId: z.number(),
+  productVariantId: z.number({ error: "Please select a product variant" }),
   quantity: z
     .number({
       error: "Quantity is required",
@@ -37,11 +38,17 @@ const adjustInventorySchema = z.object({
     .refine((value) => value !== 0, {
       message: "Quantity cannot be 0",
     }),
-  reason: z.string().min(1),
+  reason: z.string().min(1, "Please select a reason"),
   note: z.string().max(250, "Note must be 250 characters or less").optional(),
 });
 
-const AdjustInventoryForm = ({ onSuccess }: { onSuccess: () => void }) => {
+const AdjustInventoryForm = ({
+  onSuccess,
+  inventory,
+}: {
+  onSuccess: () => void;
+  inventory: InventoryInfo[];
+}) => {
   // State to handle adjust inventory errors
   const [errorAdjust, setErrorAdjust] = useState<string | null>(null);
   // State to control the spinner loading
@@ -58,11 +65,21 @@ const AdjustInventoryForm = ({ onSuccess }: { onSuccess: () => void }) => {
     },
   });
 
+  // To display the products in the dropdown
+  const variantOptions = inventory.flatMap((product) =>
+    product.product_variant.map((variant) => ({
+      id: variant.id,
+      label: `${product.name} - ${variant.variant_name}`,
+    })),
+  );
+
   const router = useRouter();
 
   // Form submit handler
   async function onSubmit(data: z.infer<typeof adjustInventorySchema>) {
     console.log(data);
+    onSuccess();
+    router.refresh();
   }
 
   return (
@@ -81,16 +98,31 @@ const AdjustInventoryForm = ({ onSuccess }: { onSuccess: () => void }) => {
                 <FieldLabel htmlFor="adjust-inventory-form-productVariantId">
                   Product / Variant
                 </FieldLabel>
-                <Select>
-                  <SelectTrigger>
-                    <SelectValue placeholder="Select a product variant" />
+                <Select
+                  value={field.value?.toString() ?? null}
+                  onValueChange={(value) => field.onChange(Number(value))}
+                >
+                  <SelectTrigger id="adjust-inventory-form-productVariantId">
+                    <SelectValue placeholder="Select a product variant">
+                      {variantOptions.find((v) => v.id === field.value)?.label}
+                    </SelectValue>
                   </SelectTrigger>
                   <SelectContent>
                     <SelectGroup>
-                      {/* Products / variants will go here */}
+                      {variantOptions.map((variant) => (
+                        <SelectItem
+                          key={variant.id}
+                          value={variant.id.toString()}
+                        >
+                          {variant.label}
+                        </SelectItem>
+                      ))}
                     </SelectGroup>
                   </SelectContent>
                 </Select>
+                {fieldState.invalid && (
+                  <FieldError errors={[fieldState.error]} />
+                )}
               </Field>
             )}
           />
@@ -133,14 +165,22 @@ const AdjustInventoryForm = ({ onSuccess }: { onSuccess: () => void }) => {
                 <FieldLabel htmlFor="adjust-inventory-form-reason">
                   Reason
                 </FieldLabel>
-                <Select>
+                <Select value={field.value} onValueChange={field.onChange}>
                   <SelectTrigger>
                     <SelectValue placeholder="Select a reason" />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectGroup>{/* Reason will go here */}</SelectGroup>
+                    <SelectGroup>
+                      <SelectItem value="Restock">Restock</SelectItem>
+                      <SelectItem value="Damage">Damage</SelectItem>
+                      <SelectItem value="Return">Return</SelectItem>
+                      <SelectItem value="Correction">Correction</SelectItem>
+                    </SelectGroup>
                   </SelectContent>
                 </Select>
+                {fieldState.invalid && (
+                  <FieldError errors={[fieldState.error]} />
+                )}
               </Field>
             )}
           />

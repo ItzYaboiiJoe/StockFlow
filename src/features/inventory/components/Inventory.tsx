@@ -9,7 +9,7 @@ const Inventory = async () => {
   return (
     <div className="p-10">
       {/* Header */}
-      <InventoryHeader />
+      <InventoryHeader inventory={inventory} />
       {/* If there are no inventory that means no products have been added yet then display a message and button to go create a product and variant */}
       {inventory.length === 0 ? (
         <InventoryEmpty />
