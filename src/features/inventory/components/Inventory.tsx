@@ -2,6 +2,7 @@ import { fetchInventory } from "../actions/fetchInventory";
 import InventoryEmpty from "./InventoryEmpty";
 import InventoryHeader from "./InventoryHeader";
 import InventorySummary from "./InventorySummary";
+import InventoryTable from "./InventoryTable";
 
 const Inventory = async () => {
   const inventory = await fetchInventory();
@@ -14,7 +15,10 @@ const Inventory = async () => {
       {inventory.length === 0 ? (
         <InventoryEmpty />
       ) : (
-        <InventorySummary inventory={inventory} />
+        <>
+          <InventorySummary inventory={inventory} />
+          <InventoryTable inventory={inventory} />
+        </>
       )}
     </div>
   );
