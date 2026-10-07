@@ -19,6 +19,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { InventoryInfo } from "../actions/fetchInventory";
+import { adjustInventory } from "../actions/adjustInventory";
 import { Input } from "@/components/ui/input";
 import { useState } from "react";
 import { toast } from "@/components/ui/toast";
@@ -77,9 +78,34 @@ const AdjustInventoryForm = ({
 
   // Form submit handler
   async function onSubmit(data: z.infer<typeof adjustInventorySchema>) {
-    console.log(data);
-    onSuccess();
-    router.refresh();
+    // Clear Error
+    setErrorAdjust(null);
+    // Activate loading spinner
+    setLoading(true);
+    try {
+      // Insert into Inventory table
+      await adjustInventory(
+        data.productVariantId,
+        data.quantity,
+        data.reason,
+        data.note,
+      );
+      // Display success message and disable spinner loading
+      toast.add({
+        type: "success",
+        description: `Inventory updated successfully.`,
+        priority: "high",
+      });
+      // Close modal
+      onSuccess();
+      router.refresh();
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        // Display Error Message and disable spinner loading
+        setErrorAdjust(error.message);
+        setLoading(false);
+      }
+    }
   }
 
   return (
